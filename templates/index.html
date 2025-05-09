@@ -7,8 +7,13 @@
   </head>
   <body>
     <h1>File Upload</h1>
-    <form enctype="multipart/form-data" method="POST">
-      {{ form.hidden_tag() }} {{form.file()}} {{form.submit()}}
+    <form
+      action="{{url_for('upload')}}"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <input type="file" name="video" accept=".mp4" />
+      <input type="submit" value="Upload" />
     </form>
   </body>
 </html>
