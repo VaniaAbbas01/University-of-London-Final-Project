@@ -7,6 +7,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'my_secret_key_here'
 camera = cv2.VideoCapture(0)
 
+# defining extensions for video files
+ALLOWED_EXTENSIONS = {'mp3'}
+
 # Dummy feedback data (simulating model output)
 mock_feedback = {
     "transcription": "Hello everyone, thank you for joining this session. I would like to talk about...",
@@ -31,8 +34,7 @@ mock_feedback = {
 def index():
     return render_template("index.html")
 
-# defining extensions for video files
-ALLOWED_EXTENSIONS = {'mp4'}
+
 
 # checking if the file is allowed
 def allowed_file(filename):
@@ -53,26 +55,26 @@ def generateFrames():
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
     
-# uploading video file
+# uploading audio file
 @app.route("/upload", methods=["POST"])
 def upload():
-    if 'video' not in request.files:
+    if 'audio' not in request.files:
         return redirect(url_for('index'))
     
-    # requesting video file 
-    video = request.files['video']
+    # requesting audio file 
+    audio = request.files['audio']
     # if no file is selected
-    if video.filename == '':
+    if audio.filename == '':
         return redirect(url_for('index'))
     
     # if file is selected and extension allowed 
-    if video and allowed_file(video.filename):
-        video.save('static/uploads/' + video.filename)
+    if audio and allowed_file(audio.filename):
+        audio.save('static/uploads/' + audio.filename)
         # render feedback page with mock data
-        return render_template('feedback.html', filename=video.filename, feedback=mock_feedback)
+        return render_template('feedback.html', filename=audio.filename, feedback=mock_feedback)
     return "invalid file type", 400
 
-# route to the video file uploaded
+# route to the audio file uploaded
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return redirect(url_for('static', filename='uploads/' + filename))
