@@ -8,7 +8,7 @@ app.config['SECRET_KEY'] = 'my_secret_key_here'
 camera = cv2.VideoCapture(0)
 
 # defining extensions for video files
-ALLOWED_EXTENSIONS = {'mp3'}
+ALLOWED_EXTENSIONS = {'mp4', 'mp3'}
 
 # Dummy feedback data (simulating model output)
 mock_feedback = {
