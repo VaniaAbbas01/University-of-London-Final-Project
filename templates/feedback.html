@@ -9,12 +9,32 @@
         color: #e0e0e0;
         font-family: Arial, sans-serif;
         padding: 30px;
+        margin: 0;
+        padding: 40px;
+        line-height: 1.6;
+      }
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 40px;
       }
       .section {
+        flex: 1;
+        min-width: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .sub-section {
         background-color: rgb(28, 34, 36, 50);
         margin-bottom: 20px;
         padding: 20px;
         border-radius: 10px;
+        transition: transform 0.2s ease;
+      }
+      .sub-section:hover {
+        transform: scale(1.01);
       }
       h2 {
         color: #05d0f9;
@@ -24,44 +44,44 @@
   <body>
     <h1>Feedback for Your Speech</h1>
 
-    <div class="section">
-      <h2>Audio Uploaded:</h2>
-      <audio
-        controls
-        src="{{ url_for('uploaded_file', filename=filename) }}"
-      ></audio>
-    </div>
-
-    <div class="section">
-      <h2>Transcription:</h2>
-      <p>{{ feedback.transcription }}</p>
-    </div>
-
-    <div class="section">
-      <h2>Fluency Stats:</h2>
-      <ul>
-        <li>Words per Minute: {{ feedback.fluency.words_per_minute }}</li>
-        <li>Filler Words: {{ feedback.fluency.filler_words }}</li>
-        <li>Pauses: {{ feedback.fluency.pauses }}</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>Tone Timeline:</h2>
-      <ul>
-        {% for tone in feedback.tone %}
-        <li>{{ tone.time }}s: {{ tone.tone }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>Suggestions:</h2>
-      <ul>
-        {% for tip in feedback.feedback %}
-        <li><strong>{{ tip.type }}:</strong> {{ tip.suggestion }}</li>
-        {% endfor %}
-      </ul>
+    <div class="container">
+      <div class="section">
+        <h2>Audio Uploaded:</h2>
+        <audio
+          controls
+          src="{{ url_for('uploaded_file', filename=filename) }}"
+        ></audio>
+        <div class="sub-section">
+          <h2>Transcription:</h2>
+          <p>{{ feedback.transcription }}</p>
+        </div>
+        <div class="sub-section">
+          <h2>Fluency Stats:</h2>
+          <ul>
+            <li>Words per Minute: {{ feedback.fluency.words_per_minute }}</li>
+            <li>Filler Words: {{ feedback.fluency.filler_words }}</li>
+            <li>Pauses: {{ feedback.fluency.pauses }}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section">
+        <div class="sub-section">
+          <h2>Tone Timeline:</h2>
+          <ul>
+            {% for tone in feedback.tone %}
+            <li>{{ tone.time }}s: {{ tone.tone }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="sub-section">
+          <h2>Suggestions:</h2>
+          <ul>
+            {% for tip in feedback.feedback %}
+            <li><strong>{{ tip.type }}:</strong> {{ tip.suggestion }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
     </div>
   </body>
 </html>
