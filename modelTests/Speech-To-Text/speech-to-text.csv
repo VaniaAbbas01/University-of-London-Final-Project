@@ -1,0 +1,7 @@
+Model,Inference Time (s),WER
+Whisper (tiny),17.88,11.884
+Whisper (base),76.60,46.545
+Whisper (small),171.35,0.748
+Faster-Whisper (tiny),32.58,11.849
+Faster-Whisper (base),74.89,46.545
+Faster-Whisper (small),175.76,0.748
