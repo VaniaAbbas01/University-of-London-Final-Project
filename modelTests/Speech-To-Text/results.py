@@ -29,7 +29,7 @@ summary = df.groupby("Model").agg({
 summary.columns = ["Model", "Mean Inference Time (s)", "Mean WER"]
 print(summary)
 
-# extracting mean of WER and Inference Time for each model
+# extracting mean of WER and Inference Time for each Model
 mean_WER = summary[["Model", "Mean WER"]]
 mean_IT = summary[["Model", "Mean Inference Time (s)"]]
 
