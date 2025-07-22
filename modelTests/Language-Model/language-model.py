@@ -29,7 +29,6 @@ results = []
 # read csv file
 df = pd.read_csv(CSV_PATH)
 
-
 # drop irrelevant columns
 df = df.drop("Serial Number", axis=1) 
 
