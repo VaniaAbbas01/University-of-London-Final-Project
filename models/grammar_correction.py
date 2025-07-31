@@ -1,8 +1,10 @@
 from happytransformer import HappyTextToText, TTSettings
 import nltk
+import re
 
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
+
 
 def loadModel():
     """"Load the language model for grammar correction."""
@@ -12,10 +14,10 @@ def loadModel():
 
     return happy_tt, args
 
+happy_tt, args = loadModel()
 
 def grammarCorrection(text):
     """Correct grammar in the given text."""
-    happy_tt, args = loadModel()
     sentences = sent_tokenize(text)
     result = ""
     for s in sentences:
@@ -29,10 +31,23 @@ def countFillerWords(text):
     """Count filler words in the given text."""
     filler_words = ["um", "uh", "like", "you know", "so", "actually"]
     count = 0
-    for word in text.split():
-        if word.lower() in filler_words:
-            count += 1
-    return count
+    suggestion = ""
+    for fw in filler_words:
+        # Use regex word boundaries to avoid partial matches (e.g., "some" includes "so")
+        pattern = r'\b' + re.escape(fw) + r'\b'
+        matches = re.findall(pattern, text)
+        count += len(matches)
+        
+    if count == 0:
+        suggestion = "Excellent! You used no filler words. Your speech was clear and confident."
+    elif 1 <= count <= 3:
+        suggestion = "Good job! You used very few filler words. Try to stay mindful to reduce them further."
+    elif 4 <= count <= 7:
+        suggestion = "You used a moderate number of filler words. Practice pausing silently instead of saying 'um' or 'like'."
+    else:
+        suggestion = "You used too many filler words. Work on speaking more deliberately and using pauses to gather your thoughts."
+
+    return count, suggestion
 
 def countWordsPerMinute(text, duration):
     """
