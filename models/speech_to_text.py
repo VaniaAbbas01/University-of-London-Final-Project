@@ -7,7 +7,7 @@ class Transcription:
     # load the OpenAI Whisper model
     def loadModel(self):
         """Load the OpenAI Whisper model."""
-        return whisper.load_model("small")
+        return whisper.load_model("base")
 
     # Transcribe audio using the OpenAI Whisper model
     def transcribeAudio(self, audio_path):
