@@ -25,7 +25,7 @@ class GrammarCorrection:
         sentences = sent_tokenize(text)
         result = ""
         for s in sentences:
-            corrected = self.happy_tt.generate_text(s, args=args)
+            corrected = self.happy_tt.generate_text(s, args=self.args)
             result += corrected.text + " "
 
         print(f"Corrected text: {result.strip()}")
