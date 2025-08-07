@@ -54,3 +54,29 @@ class LanguageAnalyser:
 
         return round(wpm, 2), feedback
     
+    # analyze vocabulary richness using Type-Token Ratio (TTR)
+    def analyseVocabularyRichness(self, text):
+        """
+        Analyze vocabulary richness in the text.
+        Returns a score and feedback.
+        """
+        words = re.findall(r'\b\w+\b', text.lower())
+        totalWords = len(words)
+        uniqueWords = len(set(words))
+        richnessScore = len(uniqueWords) / len(words) if words else 0
+
+        if totalWords == 0:
+            return 0.0, "No words found in the input."
+
+        ttr = uniqueWords / totalWords
+
+        # Provide feedback based on TTR range
+        if ttr > 0.6:
+            feedback = "Excellent vocabulary richness! You used a wide range of words."
+        elif 0.4 <= ttr <= 0.6:
+            feedback = "Your vocabulary is moderately varied. Consider using more diverse word choices."
+        else:
+            feedback = "Your vocabulary was quite limited. Try incorporating a broader range of words."
+
+        return round(ttr, 2), feedback
+    
