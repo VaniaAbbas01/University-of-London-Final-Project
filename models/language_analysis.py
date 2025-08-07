@@ -63,7 +63,6 @@ class LanguageAnalyser:
         words = re.findall(r'\b\w+\b', text.lower())
         totalWords = len(words)
         uniqueWords = len(set(words))
-        richnessScore = len(uniqueWords) / len(words) if words else 0
 
         if totalWords == 0:
             return 0.0, "No words found in the input."
