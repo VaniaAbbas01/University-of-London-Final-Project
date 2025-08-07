@@ -1,6 +1,6 @@
 import re
 
-class LangaugeAnalyser:
+class LanguageAnalyser:
 
     # counts filler words in the given text and gives suggestions accordingly
     def countFillerWords(self, text):
