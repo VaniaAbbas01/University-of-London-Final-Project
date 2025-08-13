@@ -27,18 +27,6 @@
       button:hover {
         background-color: #7c3aed;
       }
-      /* Default state */
-      .record {
-        background-color: grey;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        cursor: pointer;
-      }
-      /* Recording state */
-      .record.recording {
-        background-color: red;
-      }
     </style>
   </head>
   <body>
@@ -51,7 +39,6 @@
     >
       <input type="file" name="audio" accept=".mp3" required />
       <button type="submit">Analyze Speech</button>
-      <button type="button" class="record">Start Recording</button>
     </form>
 
     <script src="{{url_for('static', filename='recorder.js') }}"></script>
