@@ -3,45 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <title>Feedback – SpeakEasy</title>
-    <style>
-      body {
-        background-color: #020210;
-        color: #e0e0e0;
-        font-family: Arial, sans-serif;
-        padding: 30px;
-        margin: 0;
-        padding: 40px;
-        line-height: 1.6;
-      }
-      .container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 40px;
-      }
-      .section {
-        flex: 1;
-        min-width: 300px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-      .sub-section {
-        background-color: rgb(28, 34, 36, 50);
-        margin-bottom: 20px;
-        padding: 20px;
-        border-radius: 10px;
-        transition: transform 0.2s ease;
-      }
-      .sub-section:hover {
-        transform: scale(1.01);
-      }
-      h2 {
-        color: #05d0f9;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
   </head>
-  <body>
+  <body class="feedback-page">
     <h1>Feedback for Your Speech</h1>
 
     <div class="container">
