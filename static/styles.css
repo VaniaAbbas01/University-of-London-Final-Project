@@ -1,0 +1,101 @@
+/* style for index page */
+body {
+  background-color: #020210;
+  color: #05d0f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  height: 75vh;
+  margin: 0;
+}
+input,
+button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #2a2a40;
+  color: #e0e0e0;
+  border: none;
+  border-radius: 5px;
+}
+input[type="file"] {
+  background-color: #24243a;
+}
+button:hover {
+  background-color: #7c3aed;
+}
+
+/* style for transcription page */
+input,
+button,
+textarea {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #2a2a40;
+  color: #e0e0e0;
+  border: none;
+  border-radius: 5px;
+}
+
+textarea {
+  background-color: #24243a;
+  width: 90%;
+  height: 100px;
+  resize: vertical; /* allow user to expand vertically */
+}
+
+button:hover {
+  background-color: #7c3aed;
+}
+
+/* style for feedback page */
+.feedback-page {
+  background-color: #020210;
+  color: #e0e0e0;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* keeps sections balanced in center */
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.section {
+  flex: 1;
+  min-width: 320px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sub-section {
+  background-color: rgba(28, 34, 36, 0.5); /* fixed */
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: left;
+}
+
+.sub-section:hover {
+  transform: scale(1.01);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  color: #05d0f9;
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #05d0f9;
+  margin-bottom: 10px;
+}
