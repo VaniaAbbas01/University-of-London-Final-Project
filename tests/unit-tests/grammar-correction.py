@@ -1,5 +1,5 @@
 import unittest
-from models.grammar_correction import GrammarCorrection
+from features.grammar_correction import GrammarCorrection
 
 grammarCorrection = GrammarCorrection()
 class TestGrammarCorrection(unittest.TestCase):
