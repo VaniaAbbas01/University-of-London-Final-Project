@@ -4,19 +4,22 @@ import unittest
 from unittest.mock import patch, MagicMock
 from main import app
 
-
 class UploadRouteTestCase(unittest.TestCase):
+
+    # setting up the test client for Flask app
     def setUp(self):
         self.client = app.test_client()
         app.config['TESTING'] = True
         app.config['SECRET_KEY'] = "test_secret"
 
+    # testing no file upload scenarios
     def test_no_file_uploaded(self):
         """Should redirect to index when no file is in request"""
         response = self.client.post('/upload', data={})
         self.assertEqual(response.status_code, 302)  # redirect
         self.assertIn('/', response.location)
 
+    # testing empty filename scenarios
     def test_empty_filename(self):
         """Should redirect to index when filename is empty"""
         data = {'audio': (io.BytesIO(b"dummy data"), '')}
@@ -25,6 +28,7 @@ class UploadRouteTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 302)  # redirect
         self.assertIn('/', response.location)
 
+    # testing invalid file type scenarios
     def test_invalid_file_type(self):
         """Should return 400 for invalid file type"""
         with patch('main.allowed_file', return_value=False):
@@ -34,6 +38,7 @@ class UploadRouteTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 400)
             self.assertIn(b'invalid file type', response.data)
 
+    # testing valid file upload scenarios
     @patch('main.allowed_file', return_value=True)
     @patch('main.Transcription')
     @patch('main.findAudioDuration', return_value=3.5)
@@ -50,6 +55,7 @@ class UploadRouteTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"This is a test transcription", response.data)
 
+    # testing exception handling during file save
     @patch('main.allowed_file', return_value=True)
     @patch('main.Transcription')
     @patch('main.findAudioDuration', return_value=3.5)
@@ -63,8 +69,6 @@ class UploadRouteTestCase(unittest.TestCase):
         data = {'audio': mock_file}
         response = self.client.post('/upload', data={'audio': (io.BytesIO(b"dummy"), 'test.mp3')},
                                     content_type='multipart/form-data')
-        # It might still try to render template or return something,
-        # so just check it does not crash
         self.assertIn(response.status_code, (200, 400, 302))
 
 
