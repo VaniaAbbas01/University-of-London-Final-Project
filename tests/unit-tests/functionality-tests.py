@@ -5,10 +5,12 @@ from main import app
 
 class FlaskFunctionalTests(unittest.TestCase):
 
+    # setting up the test client for Flask app
     def setUp(self):
         self.client = app.test_client()
         app.config['TESTING'] = True
 
+    # testing upload route with mocked Transcription class
     @patch("main.Transcription")
     def test_upload_audio(self, mock_transcription):
         # Mock transcription behavior 
@@ -25,6 +27,7 @@ class FlaskFunctionalTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"mock transcription", response.data)
 
+    # testing analyse route with mocked dependencies
     @patch("main.SpeechToEmotion")
     @patch("main.GrammarCorrection")
     def test_analyse_route(self, mock_grammar, mock_emotion):
