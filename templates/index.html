@@ -4,30 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SpeakEasy - A Speech Coaching Application</title>
-    <style>
-      body {
-        background-color: #020210;
-        color: #05d0f9;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        padding-top: 50px;
-      }
-      input,
-      button {
-        margin-top: 20px;
-        padding: 10px;
-        background-color: #2a2a40;
-        color: #e0e0e0;
-        border: none;
-        border-radius: 5px;
-      }
-      input[type="file"] {
-        background-color: #24243a;
-      }
-      button:hover {
-        background-color: #7c3aed;
-      }
-    </style>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
   </head>
   <body>
     <h1>SpeakEasy</h1>
@@ -40,7 +20,5 @@
       <input type="file" name="audio" accept=".mp3" required />
       <button type="submit">Analyze Speech</button>
     </form>
-
-    <script src="{{url_for('static', filename='recorder.js') }}"></script>
   </body>
 </html>
