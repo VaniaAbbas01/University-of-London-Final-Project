@@ -1,5 +1,5 @@
-import tempfile, os, json, random
-from flask import Blueprint, request, session, redirect, url_for, render_template
+import tempfile, os
+from flask import Blueprint, request, session, redirect, url_for, render_template, flash
 from services.audioService import allowed_file, find_audio_duration
 from features.speech_to_text import Transcription
 
@@ -14,16 +14,28 @@ def upload():
     if audio.filename == '':
         return redirect(url_for('main.index'))
     
-    if audio and allowed_file(audio.filename, {'mp3','mp4'}):
-        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as temp:
-            temp_path = temp.name
-            audio.save(temp_path)
+    if audio and allowed_file(audio.filename, {'mp3', 'mp4'}):
+        try:
+            # Save temporarily
+            with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as temp:
+                temp_path = temp.name
+                audio.save(temp_path)
 
-        transcription = Transcription()
-        transcript = transcription.transcribeAudio(temp_path)
+            # Run transcription
+            transcription_service = Transcription()
+            transcript = transcription_service.transcribeAudio(temp_path)
 
-        session['audioDuration'] = find_audio_duration(temp_path)
-        session['audioPath'] = temp_path
+            # Store in session
+            session['audioDuration'] = find_audio_duration(temp_path)
+            session['audioPath'] = temp_path
 
-        return render_template('transcription.html', transcription=transcript)
+            return render_template("transcription.html", transcription=transcript)
+
+        except Exception as e:
+            # Clean up file if something fails
+            if "temp_path" in locals() and os.path.exists(temp_path):
+                os.remove(temp_path)
+            flash(f"Transcription failed: {str(e)}")
+            return redirect(url_for("main.index"))
+
     return "Invalid file type", 400
