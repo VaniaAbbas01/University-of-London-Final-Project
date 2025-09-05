@@ -14,7 +14,7 @@
     <h1>The Transcribed Audio</h1>
     <p>Please review the transcription below:</p>
     <div class="transcription-container">
-      <form action="{{ url_for('analyse') }}" method="POST">
+      <form action="{{ url_for('analysis.analyse') }}" method="POST">
         <textarea name="transcription">{{ transcription }}</textarea>
         <button type="submit">Confirm</button>
       </form>
