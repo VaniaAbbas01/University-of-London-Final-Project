@@ -42,7 +42,7 @@ textarea {
   background-color: #24243a;
   width: 90%;
   height: 100px;
-  resize: vertical; /* allow user to expand vertically */
+  resize: vertical;
 }
 
 button:hover {
@@ -55,47 +55,181 @@ button:hover {
   color: #e0e0e0;
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 15px 0;
   text-align: center;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* keeps sections balanced in center */
-  gap: 40px;
-  margin-top: 30px;
+.feedback-page body,
+.feedback-page html {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
-.section {
-  flex: 1;
-  min-width: 320px;
-  max-width: 600px;
+.feedback-page .main-container {
+  max-width: 100vw;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.feedback-page .full-width-section {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.feedback-page .three-column-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.feedback-page .column {
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 }
 
-.sub-section {
-  background-color: rgba(28, 34, 36, 0.5); /* fixed */
-  margin-bottom: 20px;
-  padding: 20px;
+.feedback-page .sub-section {
+  background-color: rgba(28, 34, 36, 0.5);
+  padding: 15px;
   border-radius: 10px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: left;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-.sub-section:hover {
-  transform: scale(1.01);
+.feedback-page .sub-section:hover {
+  transform: scale(1.02);
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-h1 {
-  color: #05d0f9;
-  margin-bottom: 20px;
+.feedback-page .suggestions-list {
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-h2 {
+.feedback-page h1 {
   color: #05d0f9;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 2em;
+}
+
+.feedback-page h2 {
+  color: #05d0f9;
+  margin: 0 0 10px 0;
+  border-bottom: 2px solid #05d0f9;
+  padding-bottom: 5px;
+  font-size: 1.3em;
+}
+
+.feedback-page ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.feedback-page ul li {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(224, 224, 224, 0.2);
+  line-height: 1.3;
+  font-size: 0.9em;
+  word-wrap: break-word;
+}
+
+.feedback-page ul li:last-child {
+  border-bottom: none;
+}
+
+/* Charts Section */
+.feedback-page .charts-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: rgba(28, 34, 36, 0.5);
+  border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.feedback-page .charts-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.feedback-page .chart-wrapper {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 0;
+}
+
+.feedback-page .chart-wrapper h3 {
+  color: #333;
+  margin: 0 0 8px 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.feedback-page .chart-canvas-container {
+  position: relative;
+  height: 160px;
+  width: 100%;
+}
+
+.feedback-page .chart-canvas-container canvas {
+  background-color: white;
+  border-radius: 4px;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.feedback-page .no-data {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 40px 0;
+  margin: 0;
+  font-size: 12px;
+}
+
+/* Mobile responsiveness for feedback page */
+@media (max-width: 1024px) {
+  .feedback-page .three-column-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .feedback-page .column:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .feedback-page .three-column-container {
+    grid-template-columns: 1fr;
+  }
+
+  .feedback-page .charts-container {
+    grid-template-columns: 1fr;
+  }
+
+  .feedback-page .chart-canvas-container {
+    height: 180px;
+  }
+
+  .feedback-page h1 {
+    font-size: 1.6em;
+  }
+
+  .feedback-page .main-container {
+    padding: 0 5px;
+  }
 }
