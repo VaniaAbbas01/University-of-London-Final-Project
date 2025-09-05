@@ -30,7 +30,3 @@ class GrammarCorrection:
 
         print(f"Corrected text: {result.strip()}")
         return result.strip()
-        
-
-
-
