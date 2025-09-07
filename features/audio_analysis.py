@@ -9,6 +9,7 @@ class AudioAnalyser:
         self.analysis_results = {}
 
     def extractFeatures(self):
+        """Extract Audio Features such as pitch, jitter"""
         # Load file with librosa
         y, sr = librosa.load(self.audio_file)
         duration_sec = librosa.get_duration(y=y, sr=sr)

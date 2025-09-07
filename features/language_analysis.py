@@ -1,4 +1,10 @@
 import re
+import nltk 
+nltk.download('punkt')
+from nltk.tokenize import sent_tokenize
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+nltk.download('vader_lexicon')
+# from collections import Counter
 
 class LanguageAnalyser:
 
@@ -60,13 +66,20 @@ class LanguageAnalyser:
         Analyze vocabulary richness in the text.
         Returns a score and feedback.
         """
+        # find all the words in the text, convert to lowercase for uniformity
         words = re.findall(r'\b\w+\b', text.lower())
+
+        # find total length of words
         totalWords = len(words)
+
+        # find unique words by converting the list to a set
         uniqueWords = len(set(words))
 
+        # if no words found, return 0 and a message
         if totalWords == 0:
             return 0.0, "No words found in the input."
 
+        # Calculate Type-Token Ratio (TTR) to measure vocabulary richness
         ttr = uniqueWords / totalWords
 
         # Provide feedback based on TTR range
@@ -78,4 +91,5 @@ class LanguageAnalyser:
             feedback = "Your vocabulary was quite limited. Try incorporating a broader range of words."
 
         return round(ttr, 2), feedback
-    
+
+        
