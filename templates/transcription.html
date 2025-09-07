@@ -9,15 +9,209 @@
       href="{{ url_for('static', filename='styles.css') }}"
     />
   </head>
-  <body>
-    <h1>SpeakEasy</h1>
-    <h1>The Transcribed Audio</h1>
-    <p>Please review the transcription below:</p>
-    <div class="transcription-container">
-      <form action="{{ url_for('analysis.analyse') }}" method="POST">
-        <textarea name="transcription">{{ transcription }}</textarea>
-        <button type="submit">Confirm</button>
-      </form>
+  <body class="transcription-page">
+    <div class="bg-animation">
+      <div class="floating-circle circle1"></div>
+      <div class="floating-circle circle2"></div>
+      <div class="floating-circle circle3"></div>
+      <div class="floating-circle circle4"></div>
     </div>
+
+    <div class="header">
+      <h1 class="app-title">SpeakEasy</h1>
+      <h2 class="page-subtitle">Review Your Transcription</h2>
+      <p class="instruction-text">
+        Please review and edit the transcription below before proceeding to
+        analysis. You can make any necessary corrections to ensure accuracy.
+      </p>
+    </div>
+
+    <div class="transcription-container">
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+
+      <div class="form-header">
+        <span class="form-header-icon">📝</span>
+        <span class="form-header-text">Transcribed Content</span>
+      </div>
+
+      <form
+        action="{{ url_for('analysis.analyse') }}"
+        method="POST"
+        id="transcriptionForm"
+      >
+        <div class="textarea-wrapper">
+          <label for="transcription" class="textarea-label"
+            >Your Speech Transcription:</label
+          >
+          <textarea
+            name="transcription"
+            id="transcription"
+            class="transcription-textarea"
+            placeholder="Your transcription will appear here..."
+            required
+          >
+{{ transcription }}</textarea
+          >
+          <div class="char-counter">
+            <span id="charCount">0</span> characters
+          </div>
+        </div>
+
+        <div class="action-section">
+          <button
+            type="button"
+            class="custom-button secondary-button"
+            onclick="goBack()"
+          >
+            <span>🔙</span> Go Back
+          </button>
+          <button type="submit" class="custom-button" id="confirmBtn">
+            <span>✨</span> Analyze Speech
+          </button>
+        </div>
+      </form>
+
+      <div class="tips-section">
+        <div class="tips-header">
+          <span>💡</span>
+          <strong>Tips for Better Analysis</strong>
+        </div>
+        <ul class="tips-list">
+          <li>✓ Check for proper punctuation</li>
+          <li>✓ Correct any misheard words</li>
+          <li>✓ Ensure speaker transitions are clear</li>
+          <li>✓ Add missing words or phrases</li>
+          <li>✓ Remove filler words if desired</li>
+          <li>✓ Verify technical terms and names</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <h3>Analyzing Your Speech...</h3>
+        <p>This may take a few moments</p>
+      </div>
+    </div>
+
+    <script>
+      const textarea = document.getElementById("transcription");
+      const charCount = document.getElementById("charCount");
+      const form = document.getElementById("transcriptionForm");
+      const confirmBtn = document.getElementById("confirmBtn");
+      const loadingOverlay = document.getElementById("loadingOverlay");
+
+      // Character counter
+      function updateCharCount() {
+        const count = textarea.value.length;
+        charCount.textContent = count.toLocaleString();
+
+        // Color coding based on length
+        if (count < 100) {
+          charCount.style.color = "#ff6b6b";
+        } else if (count < 500) {
+          charCount.style.color = "#ffd93d";
+        } else {
+          charCount.style.color = "#6bcf7f";
+        }
+      }
+
+      // Initialize character count
+      updateCharCount();
+      textarea.addEventListener("input", updateCharCount);
+
+      // Auto-resize textarea
+      textarea.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = Math.max(300, this.scrollHeight) + "px";
+      });
+
+      // Form submission with loading state
+      form.addEventListener("submit", function (e) {
+        if (textarea.value.trim().length < 10) {
+          e.preventDefault();
+          alert(
+            "Please ensure your transcription has at least 10 characters for meaningful analysis."
+          );
+          return;
+        }
+
+        // Show loading overlay
+        loadingOverlay.style.display = "flex";
+        confirmBtn.innerHTML = "<span>⏳</span> Analyzing...";
+        confirmBtn.disabled = true;
+
+        // Update progress bar
+        const progressFill = document.querySelector(".progress-fill");
+        progressFill.style.width = "100%";
+      });
+
+      // Go back function
+      function goBack() {
+        if (
+          confirm(
+            "Are you sure you want to go back? Any changes to the transcription will be lost."
+          )
+        ) {
+          window.history.back();
+        }
+      }
+
+      // Keyboard shortcuts
+      document.addEventListener("keydown", function (e) {
+        // Ctrl/Cmd + Enter to submit
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+          e.preventDefault();
+          form.submit();
+        }
+
+        // Escape to go back
+        if (e.key === "Escape") {
+          goBack();
+        }
+      });
+
+      // Auto-save to localStorage (optional feature)
+      let saveTimeout;
+      textarea.addEventListener("input", function () {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+          localStorage.setItem(
+            "speakeasy_transcription_backup",
+            textarea.value
+          );
+        }, 1000);
+      });
+
+      // Restore from localStorage if available
+      window.addEventListener("load", function () {
+        const backup = localStorage.getItem("speakeasy_transcription_backup");
+        if (backup && !textarea.value.trim()) {
+          if (
+            confirm(
+              "We found a saved transcription. Would you like to restore it?"
+            )
+          ) {
+            textarea.value = backup;
+            updateCharCount();
+          }
+        }
+      });
+
+      // Clear backup on successful submission
+      form.addEventListener("submit", function () {
+        localStorage.removeItem("speakeasy_transcription_backup");
+      });
+
+      // Animate progress bar on load
+      window.addEventListener("load", function () {
+        setTimeout(() => {
+          document.querySelector(".progress-fill").style.width = "75%";
+        }, 500);
+      });
+    </script>
   </body>
 </html>

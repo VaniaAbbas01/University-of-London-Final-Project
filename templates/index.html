@@ -9,16 +9,162 @@
       href="{{ url_for('static', filename='styles.css') }}"
     />
   </head>
-  <body>
-    <h1>SpeakEasy</h1>
-    <h1>Welcome to SpeakEasy</h1>
-    <form
-      action="{{url_for('upload.upload')}}"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-      <input type="file" name="audio" accept=".mp3" required />
-      <button type="submit">Analyze Speech</button>
-    </form>
+  <body class="index-page">
+    <div class="bg-animation">
+      <div class="floating-circle circle1"></div>
+      <div class="floating-circle circle2"></div>
+      <div class="floating-circle circle3"></div>
+      <div class="floating-circle circle4"></div>
+    </div>
+
+    <div class="container">
+      <div class="logo-section">
+        <h1 class="app-title">SpeakEasy</h1>
+        <p class="app-subtitle">AI-Powered Speech Coaching</p>
+        <p class="tagline">
+          Transform your speaking skills with intelligent analysis
+        </p>
+      </div>
+
+      <form
+        action="{{url_for('upload.upload')}}"
+        method="POST"
+        enctype="multipart/form-data"
+        id="uploadForm"
+      >
+        <div class="upload-section">
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon pulse">🎤</div>
+            <div class="upload-text">Drop your audio file here</div>
+            <div class="upload-subtext">or click to browse</div>
+            <input
+              type="file"
+              name="audio"
+              accept=".mp3,.wav,.m4a"
+              required
+              class="file-input"
+              id="audioFile"
+            />
+            <button
+              type="button"
+              class="custom-button"
+              onclick="document.getElementById('audioFile').click()"
+            >
+              Choose Audio File
+            </button>
+          </div>
+          <div class="file-info" id="fileInfo">
+            <span id="fileName"></span>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="custom-button"
+          id="analyzeBtn"
+          style="display: none"
+        >
+          Analyze My Speech
+        </button>
+      </form>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">📊</div>
+          <div class="feature-text">Speech Analysis</div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-text">Personalized Feedback</div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📈</div>
+          <div class="feature-text">Progress Tracking</div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-text">Instant Results</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const uploadArea = document.getElementById("uploadArea");
+      const fileInput = document.getElementById("audioFile");
+      const fileInfo = document.getElementById("fileInfo");
+      const fileName = document.getElementById("fileName");
+      const analyzeBtn = document.getElementById("analyzeBtn");
+      const form = document.getElementById("uploadForm");
+
+      // Drag and drop functionality
+      uploadArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        uploadArea.classList.add("dragover");
+      });
+
+      uploadArea.addEventListener("dragleave", () => {
+        uploadArea.classList.remove("dragover");
+      });
+
+      uploadArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove("dragover");
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          fileInput.files = files;
+          handleFileSelect();
+        }
+      });
+
+      // File selection handler
+      fileInput.addEventListener("change", handleFileSelect);
+
+      function handleFileSelect() {
+        const file = fileInput.files[0];
+        if (file) {
+          fileName.textContent = `📎 ${file.name} (${formatFileSize(
+            file.size
+          )})`;
+          fileInfo.style.display = "block";
+          analyzeBtn.style.display = "inline-block";
+
+          // Update upload area appearance
+          uploadArea.style.borderColor = "#7c3aed";
+          uploadArea.querySelector(".upload-text").textContent =
+            "File ready for analysis!";
+          uploadArea.querySelector(".upload-subtext").textContent =
+            'Click "Analyze My Speech" to continue';
+        }
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+      }
+
+      // Form submission with loading state
+      form.addEventListener("submit", (e) => {
+        const btn = analyzeBtn;
+        btn.innerHTML = "⏳ Analyzing...";
+        btn.disabled = true;
+
+        // Re-enable after 2 seconds to prevent permanent disable on error
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = "🚀 Analyze My Speech";
+        }, 2000);
+      });
+
+      // Click outside to reset if no file selected
+      uploadArea.addEventListener("click", (e) => {
+        if (e.target === uploadArea || e.target.closest(".upload-area")) {
+          fileInput.click();
+        }
+      });
+    </script>
   </body>
 </html>
