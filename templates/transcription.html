@@ -10,13 +10,6 @@
     />
   </head>
   <body class="transcription-page">
-    <div class="bg-animation">
-      <div class="floating-circle circle1"></div>
-      <div class="floating-circle circle2"></div>
-      <div class="floating-circle circle3"></div>
-      <div class="floating-circle circle4"></div>
-    </div>
-
     <div class="header">
       <h1 class="app-title">SpeakEasy</h1>
       <h2 class="page-subtitle">Review Your Transcription</h2>
@@ -32,7 +25,6 @@
       </div>
 
       <div class="form-header">
-        <span class="form-header-icon">📝</span>
         <span class="form-header-text">Transcribed Content</span>
       </div>
 
@@ -65,26 +57,24 @@
             class="custom-button secondary-button"
             onclick="goBack()"
           >
-            <span>🔙</span> Go Back
+            Go Back
           </button>
           <button type="submit" class="custom-button" id="confirmBtn">
-            <span>✨</span> Analyze Speech
+            Analyze Speech
           </button>
         </div>
       </form>
 
       <div class="tips-section">
         <div class="tips-header">
-          <span>💡</span>
           <strong>Tips for Better Analysis</strong>
         </div>
         <ul class="tips-list">
-          <li>✓ Check for proper punctuation</li>
-          <li>✓ Correct any misheard words</li>
-          <li>✓ Ensure speaker transitions are clear</li>
-          <li>✓ Add missing words or phrases</li>
-          <li>✓ Remove filler words if desired</li>
-          <li>✓ Verify technical terms and names</li>
+          <li>Check for proper punctuation</li>
+          <li>Correct any misheard words</li>
+          <li>Ensure speaker transitions are clear</li>
+          <li>Add missing words or phrases</li>
+          <li>Verify technical terms and names</li>
         </ul>
       </div>
     </div>
@@ -97,121 +87,9 @@
       </div>
     </div>
 
-    <script>
-      const textarea = document.getElementById("transcription");
-      const charCount = document.getElementById("charCount");
-      const form = document.getElementById("transcriptionForm");
-      const confirmBtn = document.getElementById("confirmBtn");
-      const loadingOverlay = document.getElementById("loadingOverlay");
-
-      // Character counter
-      function updateCharCount() {
-        const count = textarea.value.length;
-        charCount.textContent = count.toLocaleString();
-
-        // Color coding based on length
-        if (count < 100) {
-          charCount.style.color = "#ff6b6b";
-        } else if (count < 500) {
-          charCount.style.color = "#ffd93d";
-        } else {
-          charCount.style.color = "#6bcf7f";
-        }
-      }
-
-      // Initialize character count
-      updateCharCount();
-      textarea.addEventListener("input", updateCharCount);
-
-      // Auto-resize textarea
-      textarea.addEventListener("input", function () {
-        this.style.height = "auto";
-        this.style.height = Math.max(300, this.scrollHeight) + "px";
-      });
-
-      // Form submission with loading state
-      form.addEventListener("submit", function (e) {
-        if (textarea.value.trim().length < 10) {
-          e.preventDefault();
-          alert(
-            "Please ensure your transcription has at least 10 characters for meaningful analysis."
-          );
-          return;
-        }
-
-        // Show loading overlay
-        loadingOverlay.style.display = "flex";
-        confirmBtn.innerHTML = "<span>⏳</span> Analyzing...";
-        confirmBtn.disabled = true;
-
-        // Update progress bar
-        const progressFill = document.querySelector(".progress-fill");
-        progressFill.style.width = "100%";
-      });
-
-      // Go back function
-      function goBack() {
-        if (
-          confirm(
-            "Are you sure you want to go back? Any changes to the transcription will be lost."
-          )
-        ) {
-          window.history.back();
-        }
-      }
-
-      // Keyboard shortcuts
-      document.addEventListener("keydown", function (e) {
-        // Ctrl/Cmd + Enter to submit
-        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-          e.preventDefault();
-          form.submit();
-        }
-
-        // Escape to go back
-        if (e.key === "Escape") {
-          goBack();
-        }
-      });
-
-      // Auto-save to localStorage (optional feature)
-      let saveTimeout;
-      textarea.addEventListener("input", function () {
-        clearTimeout(saveTimeout);
-        saveTimeout = setTimeout(() => {
-          localStorage.setItem(
-            "speakeasy_transcription_backup",
-            textarea.value
-          );
-        }, 1000);
-      });
-
-      // Restore from localStorage if available
-      window.addEventListener("load", function () {
-        const backup = localStorage.getItem("speakeasy_transcription_backup");
-        if (backup && !textarea.value.trim()) {
-          if (
-            confirm(
-              "We found a saved transcription. Would you like to restore it?"
-            )
-          ) {
-            textarea.value = backup;
-            updateCharCount();
-          }
-        }
-      });
-
-      // Clear backup on successful submission
-      form.addEventListener("submit", function () {
-        localStorage.removeItem("speakeasy_transcription_backup");
-      });
-
-      // Animate progress bar on load
-      window.addEventListener("load", function () {
-        setTimeout(() => {
-          document.querySelector(".progress-fill").style.width = "75%";
-        }, 500);
-      });
-    </script>
+    <script
+      rel="javascript"
+      src="{{ url_for('static', filename='script.js') }}"
+    ></script>
   </body>
 </html>
