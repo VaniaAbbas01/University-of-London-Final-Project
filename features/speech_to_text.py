@@ -14,5 +14,11 @@ class Transcription:
         """Transcribe audio using the OpenAI Whisper model."""
         print(f"Transcribing audio file: {audio_path}")
         result = self.model.transcribe(audio_path)
-        return result["text"].strip().lower()
+        transcription = result["text"].strip().lower()
+
+        # Empty or silent audio
+        if not transcription: 
+            raise ValueError("Audio is silent or contains no transcribable speech.")
+
+        return transcription
 
