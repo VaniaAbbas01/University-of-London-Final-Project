@@ -19,7 +19,7 @@ class LanguageAnalyser:
         for fw in filler_words:
             # Use regex word boundaries to avoid partial matches (e.g., "some" includes "so")
             pattern = r'\b' + re.escape(fw) + r'\b'
-            matches = re.findall(pattern, text)
+            matches = re.findall(pattern, text, flags=re.IGNORECASE)
             count += len(matches)
             
         # suggest based on the count of filler words
