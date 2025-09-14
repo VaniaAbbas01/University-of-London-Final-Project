@@ -44,7 +44,7 @@ class TestLanguageAnalyser(unittest.TestCase):
     def test_wpm_slow_speech(self):
         """Test in slow speech"""
         text = "This is a slow speech with very few words."
-        wpm, feedback = self.analyser.countWordsPerMinute(text, duration=60)  # 1 min
+        wpm, feedback = self.analyser.countWordsPerMinute(text, duration=60)
         self.assertLess(wpm, 100)
         self.assertIn("too slowly", feedback)
 
