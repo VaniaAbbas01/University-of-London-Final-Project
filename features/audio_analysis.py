@@ -10,12 +10,23 @@ class AudioAnalyser:
 
     def extractFeatures(self):
         """Extract Audio Features such as pitch, jitter"""
+        if self.audio_file is None or len(self.audio_file) == 0:
+            raise ValueError("Audio is empty or invalid.")
+
         # Load file with librosa
         y, sr = librosa.load(self.audio_file)
-        duration_sec = librosa.get_duration(y=y, sr=sr)
 
+        # check if audio file is empty 
+        if y.size == 0 or sr == 0:
+            raise ValueError("Audio file is empty or corrupted")
+
+        duration_sec = librosa.get_duration(y=y, sr=sr)
         if duration_sec == 0:
             raise ValueError("Audio file is empty or corrupted")
+
+        # check if it's just silence (all zeros or near zeros)
+        if np.allclose(y, 0, atol=1e-6):
+            raise ValueError("Audio file contains only silence")
 
         # Librosa features
         # Pitch (F0)
@@ -154,7 +165,9 @@ class AudioAnalyser:
         if f["jitter"] > 0.02:
             feedback["jitter"] = "Your pitch stability is low, may indicate nervousness."
         if f["shimmer"] > 0.04:
-            feedback["shimmer"] = "Noticeable amplitude variation — relax and breathe steadily."
+            feedback["shimmer"] = "High shimmer detected — noticeable amplitude variation. Relax and breathe steadily."
+        else:
+            feedback["shimmer"] = "Your shimmer is within a healthy range."
         if f["hnr"] < 10:
             feedback["hnr"] = "Your voice sounds breathy — try clearer articulation."
         else:
