@@ -27,6 +27,6 @@ def analyse():
     return render_template(
         "feedback.html",
         feedback=feedback,
-        pitch_series=json.dumps(audio_results["pitch_series"]),
-        intensity_series=json.dumps(audio_results["intensity_series"])
+        pitch_series=json.dumps(audio_results.get("pitch_series",[])),
+        intensity_series=json.dumps(audio_results.get("intensity_series",[]))
     )
