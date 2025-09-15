@@ -3,121 +3,211 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Feedback - SpeakEasy</title>
+    <title>Speech Analysis - SpeakEasy</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
   </head>
   <body class="feedback-page">
-    <h1>Feedback for Your Speech</h1>
+    <div class="header">
+      <h1 class="app-title">SpeakEasy</h1>
+      <h2 class="page-subtitle">Your Speech Analysis Results</h2>
+      <div class="completion-badge">Analysis Complete</div>
+    </div>
 
     <div class="main-container">
-      <!-- Top Row: Transcription (Full Width) -->
-      <div class="full-width-section">
-        <div class="sub-section">
-          <h2>Transcription:</h2>
-          <p>{{ feedback.transcription }}</p>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+
+      <!-- Transcription Section -->
+      <div class="card transcription-card">
+        <div class="card-header">
+          <h2 class="card-title">Your Speech Transcription</h2>
+        </div>
+        <div class="transcription-text">{{ feedback.transcription }}</div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <!-- Fluency Stats -->
+        <div class="stats-card">
+          <div class="stats-header">
+            <h3 class="stats-title">Fluency Metrics</h3>
+          </div>
+          <ul class="stats-list">
+            <li>
+              <span class="stats-label">Words Per Minute</span>
+              <span class="stats-value"
+                >{{ feedback.fluency.words_per_minute or "N/A" }}</span
+              >
+            </li>
+            <li>
+              <span class="stats-label">Filler Words</span>
+              <span class="stats-value"
+                >{{ feedback.fluency.filler_words }}</span
+              >
+            </li>
+            <li>
+              <span class="stats-label">Pauses</span>
+              <span class="stats-value"
+                >{{ "%.2f"|format(feedback.fluency.pauses) if
+                feedback.fluency.pauses else "0.00" }}</span
+              >
+            </li>
+            <li>
+              <span class="stats-label">Vocabulary Richness</span>
+              <span class="stats-value"
+                >{{ "%.2f"|format(feedback.fluency.vocabulary_richness) }}</span
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- Tone Detection -->
+        <div class="stats-card">
+          <div class="stats-header">
+            <h3 class="stats-title">Detected Tone</h3>
+          </div>
+          <div class="tone-display">
+            <div class="tone-value">{{ feedback.tone }}</div>
+            <div class="tone-description">
+              Overall emotional tone of your speech
+            </div>
+          </div>
+        </div>
+
+        <!-- Audio Features -->
+        <div class="stats-card">
+          <div class="stats-header">
+            <h3 class="stats-title">Audio Features</h3>
+          </div>
+          <ul class="stats-list">
+            <li>
+              <span class="stats-label">Average Pitch</span>
+              <span class="stats-value"
+                >{{ "%.1f"|format(feedback.audio.features.avg_pitch) if
+                feedback.audio.features.avg_pitch else "N/A" }} Hz</span
+              >
+            </li>
+            <li>
+              <span class="stats-label">Pitch Variation</span>
+              <span class="stats-value"
+                >{{ "%.1f"|format(feedback.audio.features.pitch_var) if
+                feedback.audio.features.pitch_var else "N/A" }} Hz</span
+              >
+            </li>
+            <li>
+              <span class="stats-label">Average Loudness</span>
+              <span class="stats-value"
+                >{{ "%.1f"|format(feedback.audio.features.avg_loudness_db) if
+                feedback.audio.features.avg_loudness_db else "N/A" }} dB</span
+              >
+            </li>
+            <li>
+              <span class="stats-label">Speech Rate</span>
+              <span class="stats-value"
+                >{{ "%.1f"|format(feedback.audio.features.speech_rate) if
+                feedback.audio.features.speech_rate else "N/A" }}</span
+              >
+            </li>
+          </ul>
         </div>
       </div>
 
-      <!-- Middle Row: Three Columns -->
-      <div class="three-column-container">
-        <div class="column">
-          <div class="sub-section">
-            <h2>Fluency Stats:</h2>
-            <ul>
-              <li>WPM: {{ feedback.fluency.words_per_minute or "N/A" }}</li>
-              <li>Filler Words: {{ feedback.fluency.filler_words }}</li>
+      <!-- Advanced Audio Metrics -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Advanced Audio Metrics</h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stats-card">
+            <ul class="stats-list">
               <li>
-                Pauses: {{ "%.2f"|format(feedback.fluency.pauses) if
-                feedback.fluency.pauses else "0.00" }}
+                <span class="stats-label">Pause Ratio</span>
+                <span class="stats-value"
+                  >{{ "%.2f"|format(feedback.audio.features.pause_ratio) if
+                  feedback.audio.features.pause_ratio else "N/A" }}</span
+                >
               </li>
               <li>
-                Vocab Score: {{
-                "%.2f"|format(feedback.fluency.vocabulary_richness) }}
+                <span class="stats-label">Jitter</span>
+                <span class="stats-value"
+                  >{{ "%.4f"|format(feedback.audio.features.jitter) if
+                  feedback.audio.features.jitter else "N/A" }}</span
+                >
               </li>
             </ul>
           </div>
-
-          <div class="sub-section">
-            <h2>Detected Tone:</h2>
-            <p><strong>{{ feedback.tone }}</strong></p>
-          </div>
-        </div>
-
-        <div class="column">
-          <div class="sub-section">
-            <h2>Suggestions:</h2>
-            <ul class="suggestions-list">
-              {% for tip in feedback.feedback %}
-              <li><strong>{{ tip.type }}:</strong> {{ tip.suggestion }}</li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-
-        <div class="column">
-          <div class="sub-section">
-            <h2>Audio Features:</h2>
-            <ul>
+          <div class="stats-card">
+            <ul class="stats-list">
               <li>
-                Avg Pitch: {{ "%.1f"|format(feedback.audio.features.avg_pitch)
-                if feedback.audio.features.avg_pitch else "N/A" }} Hz
+                <span class="stats-label">Shimmer</span>
+                <span class="stats-value"
+                  >{{ "%.4f"|format(feedback.audio.features.shimmer) if
+                  feedback.audio.features.shimmer else "N/A" }}</span
+                >
               </li>
               <li>
-                Pitch Var: {{ "%.1f"|format(feedback.audio.features.pitch_var)
-                if feedback.audio.features.pitch_var else "N/A" }} Hz
-              </li>
-              <li>
-                Loudness: {{
-                "%.1f"|format(feedback.audio.features.avg_loudness_db) if
-                feedback.audio.features.avg_loudness_db else "N/A" }} dB
-              </li>
-              <li>
-                Speech Rate: {{
-                "%.1f"|format(feedback.audio.features.speech_rate) if
-                feedback.audio.features.speech_rate else "N/A" }}
-              </li>
-              <li>
-                Pause Ratio: {{
-                "%.2f"|format(feedback.audio.features.pause_ratio) if
-                feedback.audio.features.pause_ratio else "N/A" }}
-              </li>
-              <li>
-                Jitter: {{ "%.4f"|format(feedback.audio.features.jitter) if
-                feedback.audio.features.jitter else "N/A" }}
-              </li>
-              <li>
-                Shimmer: {{ "%.4f"|format(feedback.audio.features.shimmer) if
-                feedback.audio.features.shimmer else "N/A" }}
-              </li>
-              <li>
-                HNR: {{ "%.1f"|format(feedback.audio.features.hnr) if
-                feedback.audio.features.hnr else "N/A" }} dB
+                <span class="stats-label">HNR</span>
+                <span class="stats-value"
+                  >{{ "%.1f"|format(feedback.audio.features.hnr) if
+                  feedback.audio.features.hnr else "N/A" }} dB</span
+                >
               </li>
             </ul>
           </div>
         </div>
       </div>
 
-      <!-- Bottom Row: Charts -->
+      <!-- Suggestions -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Personalized Recommendations</h2>
+        </div>
+        <div class="suggestions-grid">
+          {% for tip in feedback.feedback %}
+          <div class="suggestion-item">
+            <div class="suggestion-type">{{ tip.type }}</div>
+            <div class="suggestion-text">{{ tip.suggestion }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Charts Section -->
       <div class="charts-section">
-        <h2>Audio Analysis Graphs</h2>
+        <div class="charts-header">
+          <h2 class="charts-title">Audio Analysis Visualizations</h2>
+        </div>
         <div class="charts-container">
           <div class="chart-wrapper">
-            <h3>Pitch Over Time</h3>
+            <h3 class="chart-title">Pitch Over Time</h3>
             <div class="chart-canvas-container">
               <canvas id="pitchChart"></canvas>
             </div>
           </div>
           <div class="chart-wrapper">
-            <h3>Intensity Over Time</h3>
+            <h3 class="chart-title">Intensity Over Time</h3>
             <div class="chart-canvas-container">
               <canvas id="intensityChart"></canvas>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-section">
+        <button
+          class="custom-button secondary-button"
+          onclick="window.history.back()"
+        >
+          Analyze Another
+        </button>
+        <button class="custom-button" onclick="window.print()">
+          Save Results
+        </button>
       </div>
     </div>
 
@@ -127,89 +217,128 @@
       const intensityData = {{ intensity_series | safe }};
 
       const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: true,
-        aspectRatio: 2.2,
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top',
-            labels: { font: { size: 10 } }
-          }
-        },
-        scales: {
-          x: {
-            title: { display: true, font: { size: 9 } },
-            grid: { color: 'rgba(0,0,0,0.1)' },
-            ticks: { font: { size: 8 }, maxTicksLimit: 6 }
+          responsive: true,
+          maintainAspectRatio: true,
+          aspectRatio: 2,
+          plugins: {
+              legend: {
+                  display: true,
+                  position: 'top',
+                  labels: {
+                      font: { size: 12 },
+                      color: '#333',
+                      usePointStyle: true,
+                      padding: 20
+                  }
+              }
           },
-          y: {
-            title: { display: true, font: { size: 9 } },
-            grid: { color: 'rgba(0,0,0,0.1)' },
-            ticks: { font: { size: 8 } }
+          scales: {
+              x: {
+                  title: {
+                      display: true,
+                      font: { size: 11, weight: 'bold' },
+                      color: '#555'
+                  },
+                  grid: { color: 'rgba(0,0,0,0.1)' },
+                  ticks: {
+                      font: { size: 10 },
+                      maxTicksLimit: 8,
+                      color: '#666'
+                  }
+              },
+              y: {
+                  title: {
+                      display: true,
+                      font: { size: 11, weight: 'bold' },
+                      color: '#555'
+                  },
+                  grid: { color: 'rgba(0,0,0,0.1)' },
+                  ticks: {
+                      font: { size: 10 },
+                      color: '#666'
+                  }
+              }
           }
-        }
       };
 
       if (pitchData && pitchData.length > 0) {
-        const pitchCtx = document.getElementById('pitchChart').getContext('2d');
-        new Chart(pitchCtx, {
-          type: 'line',
-          data: {
-            labels: pitchData.map(p => p.time.toFixed(1)),
-            datasets: [{
-              label: 'Pitch (Hz)',
-              data: pitchData.map(p => p.value),
-              borderColor: '#05d0f9',
-              backgroundColor: 'rgba(5, 208, 249, 0.1)',
-              borderWidth: 1.5,
-              fill: true,
-              pointRadius: 0,
-              tension: 0.1
-            }]
-          },
-          options: {
-            ...chartOptions,
-            scales: {
-              ...chartOptions.scales,
-              x: { ...chartOptions.scales.x, title: { ...chartOptions.scales.x.title, text: 'Time (s)' }},
-              y: { ...chartOptions.scales.y, title: { ...chartOptions.scales.y.title, text: 'Pitch (Hz)' }}
-            }
-          }
-        });
+          const pitchCtx = document.getElementById('pitchChart').getContext('2d');
+          new Chart(pitchCtx, {
+              type: 'line',
+              data: {
+                  labels: pitchData.map(p => p.time.toFixed(1)),
+                  datasets: [{
+                      label: 'Pitch (Hz)',
+                      data: pitchData.map(p => p.value),
+                      borderColor: '#05d0f9',
+                      backgroundColor: 'rgba(5, 208, 249, 0.1)',
+                      borderWidth: 2,
+                      fill: true,
+                      pointRadius: 1,
+                      pointHoverRadius: 4,
+                      tension: 0.2
+                  }]
+              },
+              options: {
+                  ...chartOptions,
+                  scales: {
+                      ...chartOptions.scales,
+                      x: { ...chartOptions.scales.x, title: { ...chartOptions.scales.x.title, text: 'Time (seconds)' }},
+                      y: { ...chartOptions.scales.y, title: { ...chartOptions.scales.y.title, text: 'Pitch (Hz)' }}
+                  }
+              }
+          });
       } else {
-        document.getElementById('pitchChart').parentElement.innerHTML = '<p class="no-data">No pitch data available</p>';
+          document.getElementById('pitchChart').parentElement.innerHTML = '<p class="no-data">📊 No pitch data available</p>';
       }
 
       if (intensityData && intensityData.length > 0) {
-        const intensityCtx = document.getElementById('intensityChart').getContext('2d');
-        new Chart(intensityCtx, {
-          type: 'line',
-          data: {
-            labels: intensityData.map(i => i.time.toFixed(1)),
-            datasets: [{
-              label: 'Intensity (dB)',
-              data: intensityData.map(i => i.value),
-              borderColor: '#27ae60',
-              backgroundColor: 'rgba(39, 174, 96, 0.1)',
-              borderWidth: 1.5,
-              fill: true,
-              pointRadius: 0,
-              tension: 0.1
-            }]
-          },
-          options: {
-            ...chartOptions,
-            scales: {
-              ...chartOptions.scales,
-              x: { ...chartOptions.scales.x, title: { ...chartOptions.scales.x.title, text: 'Time (s)' }},
-              y: { ...chartOptions.scales.y, title: { ...chartOptions.scales.y.title, text: 'Intensity (dB)' }}
-            }
-          }
-        });
+          const intensityCtx = document.getElementById('intensityChart').getContext('2d');
+          new Chart(intensityCtx, {
+              type: 'line',
+              data: {
+                  labels: intensityData.map(i => i.time.toFixed(1)),
+                  datasets: [{
+                      label: 'Intensity (dB)',
+                      data: intensityData.map(i => i.value),
+                      borderColor: '#7c3aed',
+                      backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                      borderWidth: 2,
+                      fill: true,
+                      pointRadius: 1,
+                      pointHoverRadius: 4,
+                      tension: 0.2
+                  }]
+              },
+              options: {
+                  ...chartOptions,
+                  scales: {
+                      ...chartOptions.scales,
+                      x: { ...chartOptions.scales.x, title: { ...chartOptions.scales.x.title, text: 'Time (seconds)' }},
+                      y: { ...chartOptions.scales.y, title: { ...chartOptions.scales.y.title, text: 'Intensity (dB)' }}
+                  }
+              }
+          });
       } else {
-        document.getElementById('intensityChart').parentElement.innerHTML = '<p class="no-data">No intensity data available</p>';
+          document.getElementById('intensityChart').parentElement.innerHTML = '<p class="no-data">📊 No intensity data available</p>';
       }
+
+      // Animate elements on load
+      window.addEventListener('load', function() {
+          const cards = document.querySelectorAll('.card, .stats-card');
+          cards.forEach((card, index) => {
+              setTimeout(() => {
+                  card.style.opacity = '0';
+                  card.style.transform = 'translateY(20px)';
+                  card.style.transition = 'all 0.5s ease';
+
+                  setTimeout(() => {
+                      card.style.opacity = '1';
+                      card.style.transform = 'translateY(0)';
+                  }, 50);
+              }, index * 100);
+          });
+      });
     </script>
   </body>
 </html>

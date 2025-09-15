@@ -76,7 +76,7 @@ uploadArea.addEventListener("click", (e) => {
 });
 
 
-/* transcription page JavaScript */
+/* -----------------Transcription page JavaScript----------------------- */
 const textarea = document.getElementById("transcription");
 const charCount = document.getElementById("charCount");
 const transcriptionForm = document.getElementById("transcriptionForm");
@@ -191,3 +191,6 @@ window.addEventListener("load", function () {
         document.querySelector(".progress-fill").style.width = "75%";
     }, 500);
 });
+
+/* ----------------------Feedback Page JavaScript-------------------------- */
+
