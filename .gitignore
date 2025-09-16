@@ -1,0 +1,9 @@
+/venv
+/__pycache__
+/features/__pycache__
+/tests/unit-tests/__pycache__
+/routes/__pycache__
+/services/__pycache__
+*.pyc
+*.pyo
+
