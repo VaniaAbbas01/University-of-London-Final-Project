@@ -1,56 +1,80 @@
 # University-of-London-Final-Project
 
-## Folder structure
+## Folder Structure
 
-Final Year Project/
-|
-├── modelTests/
-│ ├──Speech-To-Text
-│ | ├── speech-to-text.py
-│ | └── audioFiles
-│ | ├── speech-to-text.py
-│ | └── csv data
-| ├──Language-Model
-│ ├── language-model.py
-│ └── grammar-correction.csv
-│ ├── results.py
-│ └── language-model.csv
-├── templates/
+Final-Year-Project/
+│
+├── features/ # Core functionality and ML models
+│ ├── audio_analysis.py # Extracts acoustic features (pitch, intensity, jitter, etc.)
+│ ├── grammar_correction.py # Grammar correction using pretrained LM
+│ ├── language_analysis.py # Fluency, vocabulary richness, filler word detection
+│ ├── speech_to_emotion.py # Emotion classification from audio
+│ └── speech_to_text.py # Speech-to-text transcription
+│
+├── routes/ # Flask route handlers
+│ ├── analysisRoute.py # Handles /analyse (feedback generation)
+│ ├── mainRoute.py # Handles main index page
+│ └── uploadRoute.py # Handles audio upload & transcription
+│
+├── services/ # Helper services
+│ ├── audioService.py # File validation, audio duration
+│ └── feedbackService.py # Orchestrates feedback generation
+│
+├── static/ # Static files (CSS, JS, images)
+│ └── styles.css
+│
+├── templates/ # Frontend templates (Jinja2 + HTML)
 │ ├── index.html
 │ ├── feedback.html
-│ └── video.html
-├── main.py
-|
+│ └── transcription.html
+│
+├── tests/ # Testing modules
+│ ├── model-tests/ # Model benchmarking & evaluation
+│ └── unit-tests/ # Unit and functional tests
+│
+├── config.py # App configuration
+├── main.py # Entry point (Flask app launcher)
+├── requirements.txt # Python dependencies
+└── README.md
+
+---
 
 ## Setup Requirements
 
 ### User Interface
 
-The following package is required to run the web application:
+- [Flask](https://pypi.org/project/Flask/) – lightweight web framework for Python
+- Other dependencies (ML/NLP/audio packages) are listed in **`requirements.txt`**
 
-- [`Flask`](https://pypi.org/project/Flask/) – lightweight web framework for Python
+---
 
-### Benchmarking Packages
+## Running the Application
 
-#### Speech To Text Models
+### 1. Install dependencies
 
-- `time` – Standard Python module for tracking execution time
-- `csv` – Standard module to read/write CSV files
-- `pandas` – For data manipulation and analysis
-- `tabulate` – To print tabular results in a readable format
-- `whisper` – OpenAI's Whisper ASR model
-- `faster-whisper` – Optimized Whisper implementation for faster inference
-- `jiwer` – Measures Word Error Rate (WER) for accuracy evaluation
+`pip install -r requirements.txt`
 
-#### Language Models
+## Running the Application
 
-These packages support text generation, grammar correction, and benchmarking:
+### Install dependencies:
 
-- `time` – Execution time measurement
-- `csv` – File I/O
-- `pandas` – Data handling
-- `tabulate` – Output formatting
-- `happytransformer` – Simplified interface to use NLP models
-- `transformers` – Hugging Face’s NLP model library
-- `nltk` – Tokenization, BLEU/GLEU scoring, etc.
-- `language_tool_python` – Grammar and spelling correction tool
+`pip install -r requirements.txt`
+
+### Run the Flask app:
+
+`python main.py`
+
+### Open your browser at:
+
+`http://127.0.0.1:5000/`
+
+## Running Tests
+
+### Unit Tests
+
+- `python -m unittest tests.unit-tests.<filename.py>`
+
+### Model Tests
+
+- "cd" into the model-tests folder
+- `python <filename.py>`
