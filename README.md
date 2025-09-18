@@ -2,40 +2,43 @@
 
 ## Folder Structure
 
+```bash
 Final-Year-Project/
 │
 ├── features/ # Core functionality and ML models
-│ ├── audio_analysis.py # Extracts acoustic features (pitch, intensity, jitter, etc.)
-│ ├── grammar_correction.py # Grammar correction using pretrained LM
-│ ├── language_analysis.py # Fluency, vocabulary richness, filler word detection
-│ ├── speech_to_emotion.py # Emotion classification from audio
-│ └── speech_to_text.py # Speech-to-text transcription
+│   ├── audio_analysis.py # Extracts acoustic features (pitch, intensity, jitter, etc.)
+│   ├── grammar_correction.py # Grammar correction using pretrained LM
+│   ├── language_analysis.py # Fluency, vocabulary richness, filler word detection
+│   ├── speech_to_emotion.py # Emotion classification from audio
+│   └── speech_to_text.py # Speech-to-text transcription
 │
 ├── routes/ # Flask route handlers
-│ ├── analysisRoute.py # Handles /analyse (feedback generation)
-│ ├── mainRoute.py # Handles main index page
-│ └── uploadRoute.py # Handles audio upload & transcription
+│   ├── analysisRoute.py # Handles /analyse (feedback generation)
+│   ├── mainRoute.py # Handles main index page
+│   └── uploadRoute.py # Handles audio upload & transcription
 │
 ├── services/ # Helper services
-│ ├── audioService.py # File validation, audio duration
-│ └── feedbackService.py # Orchestrates feedback generation
+│   ├── audioService.py # File validation, audio duration
+│   └── feedbackService.py # Orchestrates feedback generation
 │
 ├── static/ # Static files (CSS, JS, images)
-│ └── styles.css
+│   ├──  styles.css
+│   └── script.js
 │
 ├── templates/ # Frontend templates (Jinja2 + HTML)
-│ ├── index.html
-│ ├── feedback.html
-│ └── transcription.html
+│   ├── index.html
+│   ├── feedback.html
+│   └── transcription.html
 │
 ├── tests/ # Testing modules
-│ ├── model-tests/ # Model benchmarking & evaluation
-│ └── unit-tests/ # Unit and functional tests
+│   ├── model-tests/ # Model benchmarking & evaluation
+│   └── unit-tests/ # Unit and functional tests
 │
 ├── config.py # App configuration
 ├── main.py # Entry point (Flask app launcher)
 ├── requirements.txt # Python dependencies
 └── README.md
+```
 
 ---
 
@@ -54,13 +57,7 @@ Final-Year-Project/
 
 `pip install -r requirements.txt`
 
-## Running the Application
-
-### Install dependencies:
-
-`pip install -r requirements.txt`
-
-### Run the Flask app:
+### 2. Run the Flask app:
 
 `python main.py`
 
