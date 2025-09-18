@@ -55,15 +55,35 @@ Final-Year-Project/
 
 This system uses Python `3.10.11`
 
-### 1. Install dependencies
+### 1. Create virtual environment
+
+On Windows:
+
+`python -m venv venv`
+
+On Linux/macOS:
+
+`python3 -m venv venv`
+
+### 2. Activate virtual environment
+
+On windows:
+
+`venv\Scripts\activate`
+
+On Linux/macOS:
+
+`source venv/bin/activate`
+
+### 3. Install dependencies
 
 `pip install -r requirements.txt`
 
-### 2. Run the Flask app:
+### 4. Run the Flask app:
 
 `python main.py`
 
-### 3. Open your browser at:
+### 5. Open your browser at:
 
 `http://127.0.0.1:5000/`
 
