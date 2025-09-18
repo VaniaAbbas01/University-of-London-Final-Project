@@ -53,6 +53,8 @@ Final-Year-Project/
 
 ## Running the Application
 
+This system uses Python `3.10.11`
+
 ### 1. Install dependencies
 
 `pip install -r requirements.txt`
