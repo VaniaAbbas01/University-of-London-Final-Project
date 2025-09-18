@@ -34,7 +34,6 @@ for size in MODEL_SIZES:
         if j < len(reference_text):
             j = j + 1
 
-
 for size in MODEL_SIZES:
     print("Benchmarking OpenAI Whisper...")
     i=0
@@ -64,7 +63,3 @@ with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
     writer.writerows(results)
 
 print(f"\nResults saved to: {csv_path}")
-
-
-
-

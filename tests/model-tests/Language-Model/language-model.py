@@ -137,7 +137,3 @@ with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
     writer.writerows(results)
 
 print(f"\nResults saved to: {csv_path}")
-
-
-
-
