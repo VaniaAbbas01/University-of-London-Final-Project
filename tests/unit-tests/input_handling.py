@@ -23,18 +23,21 @@ class UploadRouteTestCase(unittest.TestCase):
             follow_redirects=follow_redirects
         )
 
+    # testing no file uploaded
     def test_no_file_uploaded(self):
         """Should redirect to index when no file is in request."""
         response = self.client.post("/upload", data={})
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.location.endswith("/"))
 
+    # testing empty filename
     def test_empty_filename(self):
         """Should redirect to index when filename is empty."""
         response = self.upload_file(filename="")
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.location.endswith("/"))
 
+    # testing invalid file type
     def test_invalid_file_type(self):
         """Should return 400 for invalid file type."""
         with patch("routes.uploadRoute.allowed_file", return_value=False):
@@ -54,7 +57,6 @@ class UploadRouteTestCase(unittest.TestCase):
         response = self.upload_file()
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"This is a test transcription", response.data)
-
 
     @patch("routes.uploadRoute.allowed_file", return_value=True)
     @patch("routes.uploadRoute.Transcription")
@@ -77,7 +79,6 @@ class UploadRouteTestCase(unittest.TestCase):
         self.assertTrue(
             "Transcription failed" in html or "Error" in html or response.status_code in (302, 400)
         )
-
 
 if __name__ == "__main__":
     unittest.main()
