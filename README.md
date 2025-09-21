@@ -97,9 +97,12 @@ On Linux/macOS:
 
 ### Unit Tests
 
-- `python -m unittest tests.unit-tests.<filename.py>`
+From the root of the folder, use command:
+
+- run `python -m unittest tests.unit-tests.<filename.py>`
 
 ### Model Tests
 
-- "cd" into the model-tests folder
-- `python <filename.py>`
+- "cd" into **tests/model-tests** folder from folder root
+- "cd" into a specific folder for the benchmark scripts you want to run
+- run `python <filename.py>`
