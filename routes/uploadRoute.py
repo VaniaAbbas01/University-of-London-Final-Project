@@ -14,7 +14,7 @@ def upload():
     if audio.filename == '':
         return redirect(url_for('main.index'))
     
-    if audio and allowed_file(audio.filename, {'mp3', 'mp4'}):
+    if audio and allowed_file(audio.filename, {'mp3', 'wav'}):
         try:
             # Save temporarily
             with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as temp:
