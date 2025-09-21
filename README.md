@@ -49,6 +49,10 @@ Final-Year-Project/
 - [Flask](https://pypi.org/project/Flask/) – lightweight web framework for Python
 - Other dependencies (ML/NLP/audio packages) are listed in **`requirements.txt`**
 
+### Audio File Processing
+
+- [ffmpeg](https://www.ffmpeg.org/download.html) - Whisper model requires `ffmpeg` software to process audio files for transcription
+
 ---
 
 ## Running the Application
